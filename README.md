@@ -1,0 +1,1 @@
+# google-chrome-favicons-canvas

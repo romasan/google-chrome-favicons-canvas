@@ -7,7 +7,7 @@ const Canvas = require("canvas");
 const colorThief = require('color-thief-node');
 const rgbToHex = require('./rgbToHex.js');
 const rgbToHsl = require('./rgbToHsl.js');
-var path = require('path');
+const path = require('path');
 const hd = require('humanize-duration');
 
 const size = 16;
@@ -15,7 +15,6 @@ const size = 16;
 const start = Date.now();
 
 const drawData = data => {
-    // let lines = data.sort(e => Math.random() - .5);
     let lines = data.map(e => {
         const buf = e.image_data;
 
@@ -43,26 +42,26 @@ const drawData = data => {
 
     lines = _.chunk(lines, side);
     lines.forEach(line => line.sort(({hsl: [AH, AS, AL]}, {hsl: [BH, BS, BL]}) => 
-        AS >= BS
-            ? 1
-            : -1
+        AS >= BS ? 1 : -1
     ));
     lines = _.flatten(lines)
+
+    const canvassize = side * size;
     
-    const canvas = new Canvas.Canvas(side * size, side * size, "png");
+    const canvas = new Canvas.Canvas(canvassize, canvassize, "png");
     const ctx = canvas.getContext('2d');
 
-    // const i = 0;
     for (const i in lines) {
         const x = i % side;
         const y = parseInt(i / side);
 
         // ctx.fillStyle = lines[i].hex;
-        // ctx.fillRect((side * size) + (x * size), y * size, size, size);
+        // ctx.fillRect(canvassize + (x * size), y * size, size, size);
 
         ctx.drawImage(lines[i].image, x * size, y * size);
     }
     fs.writeFileSync("out.png", canvas.toBuffer());
+
     // const MiB = 1024 * 1024;
     // const used_memory = '~' + parseFloat(( process.memoryUsage().heapUsed / MiB ).toFixed(2)) + ' MiB';
     console.log('Done', hd(Date.now() - start));
@@ -79,7 +78,6 @@ const query = favicon_bitmaps
     .toString();
 
 const getData = () => {
-    
     const base = sqlite.open(dbfilepath);
     base.then(db => {
         db.all(query).then(drawData)
@@ -101,21 +99,3 @@ fs.exists(dbfilepath, exists => {
         console.log(`Error: file "${dbfilepath}" not found.`);
     }
 });
-
-/*
-const { Parser } = require('node-sql-parser');
-const parser = new Parser();
-const ast = parser.astify('');
-const csv = require('csv-parser')
-
-let sql = '';
-fs.createReadStream(__dirname + '\\icons.sql', {encoding : 'utf-8'})
-// .pipe(csv())
-.on('data', function(data){
-    count++;
-    sql += data
-})
-.on('end',function(){
-    let lines = sql.split('\n');
-});
-*/

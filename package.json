@@ -1,7 +1,7 @@
 {
   "name": "icons",
   "version": "1.0.0",
-  "description": "Concat icons from csv to one canvas",
+  "description": "Concat icons from google-chrome favicons sqllite database to one canvas",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

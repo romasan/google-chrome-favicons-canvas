@@ -1,0 +1,20 @@
+{
+  "name": "icons",
+  "version": "1.0.0",
+  "description": "Concat icons from csv to one canvas",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Roman Bauer",
+  "license": "ISC",
+  "devDependencies": {
+    "canvas": "^2.6.0",
+    "color-thief-node": "^1.0.3",
+    "humanize-duration": "^3.21.0",
+    "lodash": "^4.17.15",
+    "md5-hex": "^3.0.1",
+    "sql": "^0.78.0",
+    "sqlite": "^3.0.3"
+  }
+}

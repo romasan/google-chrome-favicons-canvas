@@ -1,0 +1,1 @@
+module.exports = ([r, g, b]) => r * 255 * 255 + g * 255 + b;

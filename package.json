@@ -16,5 +16,10 @@
     "md5-hex": "^3.0.1",
     "sql": "^0.78.0",
     "sqlite": "^3.0.3"
+  },
+  "dependencies": {
+    "node-sql-parser": "^1.6.18",
+    "require-sql": "^1.0.0",
+    "sqlite3": "^4.1.1"
   }
 }

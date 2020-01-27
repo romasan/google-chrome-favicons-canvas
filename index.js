@@ -11,19 +11,12 @@ const sqlite3 = require('sqlite3');
 const sql = require('sql');
 require('require-sql');
 const initsql = require('./shemas/init.sql');
-// console.log('---', initsql.replace(/[\t\n\r]+/ig, ' '));
-// const { Parser } = require('node-sql-parser');
-// const parser = new Parser();
-// const ast = parser.astify(initsql.replace(/[\t\n\r]+/ig, ' '));
-// console.log({ast});
+
 sql.setDialect('sqlite');
 const colors = sql.define({
     name: 'colors',
     columns: ['id', 'dec', 'hex', 'path', 'hash', 'image', 'width', 'height']
 });
-
-// console.log('--- sql:', Object.keys(sql));
-// console.log('--- sql:', sql.create('select * from qwe;'));
 
 /*
 const size = 16;
@@ -84,14 +77,6 @@ const drawData = data => {
 }
 */
 
-// const query = new icons.create();
-// console.log('--- query:', query.toQuery());
-
-// const query = favicon_bitmaps
-//     .select(favicon_bitmaps.id, favicon_bitmaps.image_data)
-//     .from(favicon_bitmaps)
-//     .where(favicon_bitmaps.width.equals(size))
-//     .toString();
 
 const findNearest = (arr, value) => arr.reduce((prev, curr) => (
     Math.abs(curr - value) < Math.abs(prev - value) ? curr : prev
@@ -112,9 +97,6 @@ const imageInfo = (src, pixels = false) => {
     const { width, height } = image;
 
     const color = colorThief.getColor(image);
-    // const hex = rgbToHex(color);
-    // const dec = rgbToDec(color);
-    // const hash = md5Hex(input);
 
     if (pixels) {
         const canvas = new Canvas.Canvas(width, height, "png");
@@ -188,46 +170,33 @@ const getAssetsFromDB = db => {
 const action = 'add';
 
 const init = () => {
-    sqlite.open(dbfilepath).then(async db => {
-        await db.exec(initsql);
-        const input = fs.readFileSync('./input.png');
+    sqlite.open(dbfilepath)
+        .then(async db => {
+            await db.exec(initsql);
 
-        switch (action) {
-            case 'add':
-                const wipeBefore = true;
-                addAssetsToDB(db, wipeBefore);
-                break;
-            case 'draw':
-                // const assets = await getAssetsFromDB(db);
-                // getAssetsFromDB(db);
-                break;
-        }
-        
+            switch (action) {
+                case 'add':
+                    const wipeBefore = true;
+                    addAssetsToDB(db, wipeBefore);
+                    break;
+                case 'draw':
+                    const input = fs.readFileSync('./input.png');
+                    // const assets = await getAssetsFromDB(db);
+                    // getAssetsFromDB(db);
+                    break;
+            }
 
-        // const image = imageInfo(input, true);
-        // console.log('--- image:', image);
+            // const canvas = new Canvas.Canvas(width * 2, height * 2, "png");
+            // const ctx = canvas.getContext('2d');
 
-        // console.log({
-        //     dec,
-        //     hex,
-        //     path,
-        //     hash,
-        //     image,
-        //     width,
-        //     height,
-        // });
+            // for (let i = 0; i < 4; i++) {
+            //     const x = i % 2;
+            //     const y = parseInt(i / 2);
+            //     ctx.drawImage(image, x * width, y * height);
+            // }
 
-        // const canvas = new Canvas.Canvas(width * 2, height * 2, "png");
-        // const ctx = canvas.getContext('2d');
-
-        // for (let i = 0; i < 4; i++) {
-        //     const x = i % 2;
-        //     const y = parseInt(i / 2);
-        //     ctx.drawImage(image, x * width, y * height);
-        // }
-
-        // fs.writeFileSync("output.png", canvas.toBuffer());
-    });
+            // fs.writeFileSync("output.png", canvas.toBuffer());
+        });
 }
 
 fs.exists(dbfilepath, exists => {

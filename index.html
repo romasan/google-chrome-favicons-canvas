@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title> </title>
+        <script>
+        const init = () => {
+            const canvas = document.createElement("canvas"),
+                ctx = canvas.getContext("2d"),
+                W = canvas.width = innerWidth,
+                H = canvas.height = innerHeight,
+                b = document.body,
+                chars = "汉字漢字01ZGTXTYMRJ汉堡包 漢ЙЩЖЪ+#@ΔΘΨΩΣΞλ".split('');
+
+            b.innerHTML = '';
+            b.appendChild(canvas);
+            b.style.margin = 0;
+            b.style.overflow = 'hidden';
+            
+            let font = 10,
+                col = W / font,
+                arr = Array(~~col).fill(H / font + 1);
+
+            setInterval(() => {
+                ctx.fillStyle = "rgba(0, 0, 0, .05)"
+                ctx.fillRect(0, 0, W, H)
+                ctx.fillStyle = "#0f0"
+                for (let i in arr) {
+                    let txt = chars[Math.floor(Math.random() * chars.length)]
+                    ctx.fillText(txt, i * font, arr[i] * font)
+                    if (arr[i] * font > H && Math.random() > 0.975) {arr[i] = 0}
+                    arr[i]++
+                    }
+            }, 50)
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('a').addEventListener('click', event => {
+                event.preventDefault();
+                document.documentElement.requestFullscreen()
+                    .then(init);
+            })
+        });
+        </script>
+    </head>
+    <body>
+        <a href="#">Wake up, Neo...</a>
+    </body>
+</html>
